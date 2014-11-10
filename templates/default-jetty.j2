@@ -1,0 +1,12 @@
+JETTY_HOME={{ jetty_dst_dir }}/jetty
+JETTY_USER={{ jetty_user_login }}
+{% if jetty_host is defined and jetty_port is defined %}
+JETTY_ARGS='jetty.host={{ jetty_host }} jetty.port={{ jetty_port }}'
+{% elif jetty_host is defined %}
+JETTY_ARGS='jetty.host={{ jetty_host }}'
+{% elif jetty_port is defined %}
+JETTY_ARGS='jetty.port={{ jetty_port }}'
+{% endif %}
+{% if jetty_java_options is defined %}
+JAVA_OPTIONS='{{ jetty_java_options }}'
+{% endif %}

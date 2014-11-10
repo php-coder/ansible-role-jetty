@@ -1,2 +1,65 @@
 ---
-# tasks file for jetty
+
+- name: Download distribution tarball
+  get_url:
+    url="http://eclipse.org/downloads/download.php?file=/jetty/{{ jetty_version }}/dist/jetty-distribution-{{ jetty_version }}.tar.gz&r=1"
+    dest={{ jetty_src_dir }}
+
+- name: Create group
+  group:
+    name={{ jetty_group_name }}
+    state=present
+    system=yes
+  when: jetty_group_create
+
+- name: Create user
+  user:
+    name={{ jetty_user_login }}
+    state=present
+    comment='Jetty Web Server'
+    createhome=no
+    group={{ jetty_group_name }}
+    home={{ jetty_user_homedir }}
+    shell=/usr/sbin/nologin
+    system=yes
+  when: jetty_user_create
+
+- name: Unpack distribution
+  shell: "tar zxf {{ jetty_src_dir }}/jetty-distribution-{{ jetty_version }}.tar.gz && chown -R {{ jetty_user_login }}:{{ jetty_group_name}} jetty-distribution-{{ jetty_version }}"
+  args:
+    chdir: "{{ jetty_dst_dir }}"
+    creates: "{{ jetty_dst_dir}}/jetty-distribution-{{ jetty_version }}"
+
+- name: Create symbolic link to distribution
+  file:
+    src="{{ jetty_dst_dir }}/jetty-distribution-{{ jetty_version}}"
+    dest={{ jetty_dst_dir }}/jetty
+    state=link
+
+- name: Create symbolic link to logs
+  file:
+    src="{{ jetty_dst_dir }}/jetty/logs"
+    dest=/var/log/jetty
+    state=link
+
+- name: Create init script
+  file:
+    src="{{ jetty_dst_dir}}/jetty/bin/jetty.sh"
+    dest=/etc/init.d/jetty
+    state=link
+
+- name: Create default configuration file
+  template:
+    src=default-jetty.j2
+    dest=/etc/default/jetty
+    owner=root
+    group=root
+    mode=0644
+  notify: Restart Jetty
+
+- name: Run and enable Jetty to start on boot
+  service:
+    name=jetty
+    state=started
+    enabled=yes
+

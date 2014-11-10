@@ -1,2 +1,7 @@
 ---
-# handlers file for jetty
+
+- name: Restart Jetty
+  service:
+    name=jetty
+    state=restarted
+

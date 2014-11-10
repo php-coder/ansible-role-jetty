@@ -1,2 +1,11 @@
 ---
-# defaults file for jetty
+jetty_version: '9.2.3.v20140905'
+jetty_src_dir: /usr/src
+jetty_dst_dir: /opt
+
+jetty_user_create: true
+jetty_user_login: jetty
+jetty_user_homedir: /opt/jetty
+
+jetty_group_create: true
+jetty_group_name: jetty
