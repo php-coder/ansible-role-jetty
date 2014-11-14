@@ -1,5 +1,5 @@
 Ansible role for Jetty installation
-=========
+===================================
 
 Installs Jetty web-server from tarball.
 
