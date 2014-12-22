@@ -94,7 +94,7 @@ Example of usage with custom host/port and Java options:
              role: php-coder.jetty,
              jetty_host: '127.0.0.1',
              jetty_port: 9090,
-             jetty_java_options: '-XX:+UseCompressedOops -Dsun.rmi.dgc.client.gcInterval=86400000 -Dsun.rmi.dgc.server.gcInterval=86400000',
+             jetty_java_options: '-XX:+UseCompressedOops -Dsun.rmi.dgc.client.gcInterval=86400000 -Dsun.rmi.dgc.server.gcInterval=86400000'
            }
 
 
